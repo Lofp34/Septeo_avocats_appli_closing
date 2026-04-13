@@ -76,8 +76,6 @@ export const trainingSteps: TrainingStep[] = [
       "Merci pour votre temps. Vous avez pu vous connecter facilement ?",
       "Avant de commencer, comment se passe votre semaine ? Dites-moi.",
       "L'objectif aujourd'hui, c'est de comprendre votre fonctionnement actuel et de voir si Septeo peut vous aider sur des sujets concrets.",
-      "Je ne vais pas commencer par vous derouler un catalogue, je vais d'abord comprendre ce qui compte vraiment pour votre cabinet.",
-      "Si on identifie un vrai sujet, je vous proposerai d'en parler concretement, d'echanger concretement la-dessus a la fin de l'echange.",
       "Je vais vous presenter rapidement Septeo.",
       "Ensuite, on va s'interesser a votre organisation actuelle, aux points qui peuvent freiner eventuellement et a ce qu'on peut envisager concretement.",
       "C'est un entretien qui dure une vingtaine de minutes. Est-ce que c'est bon pour vous ?",
