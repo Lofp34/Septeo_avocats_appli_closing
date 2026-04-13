@@ -95,8 +95,6 @@ export const trainingSteps: TrainingStep[] = [
         title: "Cadre",
         formulations: [
           "L'objectif aujourd'hui, c'est de comprendre votre fonctionnement actuel et de voir si Septeo peut vous aider sur des sujets concrets.",
-          "Je ne vais pas commencer par vous derouler un catalogue, je vais d'abord comprendre ce qui compte vraiment pour votre cabinet.",
-          "Si on identifie un vrai sujet, je vous proposerai d'en parler concretement, d'echanger concretement la-dessus a la fin de l'echange.",
         ],
       },
       {
