@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Septeo Avocat Closing Lab
 
-## Getting Started
+Application de simulation mobile-first pour une formation de 3 heures autour du closing Septeo Avocat.
 
-First, run the development server:
+Le principe pedagogique : le closing n'est pas un moment de pression, mais l'aboutissement logique d'une decouverte structuree qui a fait emerger les enjeux, les consequences et la pertinence de la solution.
+
+## Modules
+
+- `Prise de notes` : enjeux, consequences, solution pertinente, objection, closing, resultat et debrief.
+- `Commercial` : GPS d'entretien en 10 etapes, de la prise de contact au closing.
+- `Client` : 3 cas avocats prets a jouer en binome, avec objections et reponses rapides.
+
+Les donnees restent dans le navigateur via `localStorage`. Les exports `.txt` et `.json` sont generes cote client, sans backend.
+
+## Commandes
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run test:e2e
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploiement Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Le projet est un Next.js App Router statique, sans API route, sans base de donnees et sans variable d'environnement.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pour le deploiement :
 
-## Learn More
+1. Pousser le code sur le depot GitHub `Lofp34/Septeo_avocats_appli_closing`.
+2. Importer le depot dans Vercel.
+3. Conserver les reglages Next.js detectes automatiquement par Vercel.
 
-To learn more about Next.js, take a look at the following resources:
+## Asset de marque
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Le logo Septeo est servi localement depuis `public/brand/septeo-logo.jpg`.
