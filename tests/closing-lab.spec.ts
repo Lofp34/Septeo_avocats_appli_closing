@@ -19,9 +19,23 @@ test("mobile simulation flow persists notes and exports JSON", async ({
     .locator(".module-tabs")
     .getByRole("button", { name: "Client" })
     .click();
-  await page.getByRole("button", { name: /Durand & Associes/ }).click();
+  const durandScenario = page.getByRole("button", {
+    name: /Durand & Associes/,
+  });
+  await durandScenario.click();
   await expect(page.getByText("Cas selectionne")).toBeVisible();
   await expect(page.getByText("Analyse documentaire sous tension")).toBeVisible();
+  await expect(durandScenario).toHaveAttribute("aria-expanded", "true");
+
+  await durandScenario.click();
+  await expect(durandScenario).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByText("Cas selectionne")).toHaveCount(0);
+  await expect(
+    page.getByText("Choisissez un cas pour afficher la fiche client complete."),
+  ).toBeVisible();
+
+  await durandScenario.click();
+  await expect(page.getByText("Cas selectionne")).toBeVisible();
 
   await page.getByRole("button", { name: /Lancer le role commercial/ }).click();
   await expect(page.getByText("Structure de l'entretien")).toBeVisible();

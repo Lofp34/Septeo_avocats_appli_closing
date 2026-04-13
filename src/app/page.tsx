@@ -142,15 +142,24 @@ export default function Home() {
 
   function selectScenario(id: string) {
     const scenario = clientScenarios.find((item) => item.id === id);
-    setState((current) => ({
-      ...current,
-      selectedCaseId: id,
-      notes: {
-        ...current.notes,
-        casePlayed: scenario?.cabinet || current.notes.casePlayed,
-        objection: scenario?.objection || current.notes.objection,
-      },
-    }));
+    setState((current) => {
+      if (current.selectedCaseId === id) {
+        return {
+          ...current,
+          selectedCaseId: "",
+        };
+      }
+
+      return {
+        ...current,
+        selectedCaseId: id,
+        notes: {
+          ...current.notes,
+          casePlayed: scenario?.cabinet || current.notes.casePlayed,
+          objection: scenario?.objection || current.notes.objection,
+        },
+      };
+    });
   }
 
   function toggleStepCheck(stepId: string, index: number) {
@@ -658,6 +667,7 @@ export default function Home() {
                     ? "scenario-card is-active"
                     : "scenario-card"
                 }
+                aria-expanded={state.selectedCaseId === scenario.id}
                 onClick={() => selectScenario(scenario.id)}
               >
                 <span>{scenario.title}</span>
