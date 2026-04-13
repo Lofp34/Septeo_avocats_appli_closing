@@ -354,6 +354,12 @@ export const discoveryAxes: DiscoveryAxis[] = [
   },
 ];
 
+const standardPriceObjection =
+  "C'est interessant, mais ca represente quand meme un budget tres important. Ca me fait hesiter.";
+
+const standardPriceClosingReaction =
+  "Accepte une prochaine etape si le commercial reconnait le budget, revient aux enjeux exprimes et propose une avancee simple et datee.";
+
 export const clientScenarios: ClientScenario[] = [
   {
     id: "durand-associes",
@@ -391,10 +397,8 @@ export const clientScenarios: ClientScenario[] = [
       "L'associe craint une baisse de qualite si la pression continue.",
       "Il accepterait un pilote si le cadre de confidentialite est clair.",
     ],
-    objection:
-      "L'IA, c'est interessant, mais sur ce type de sujet, je veux etre sur de la confidentialite et je ne veux pas bouleverser les habitudes du cabinet.",
-    expectedClosingReaction:
-      "Accepte une prochaine etape si le commercial relie gain de temps, qualite d'analyse et cadre de confidentialite.",
+    objection: standardPriceObjection,
+    expectedClosingReaction: standardPriceClosingReaction,
     relevantSolutions: [
       "Septeo Brain pour resumer, comparer et extraire l'essentiel des documents.",
       "Integration aux outils du quotidien pour eviter une rupture d'usage.",
@@ -435,7 +439,7 @@ export const clientScenarios: ClientScenario[] = [
     dominantIssue:
       "Trop d'appels, trop de mails et trop de coordination manuelle avec les clients.",
     openingMood:
-      "Sympathique, mais ne considere pas encore le sujet comme une urgence.",
+      "Sympathique, consciente du sujet, mais attentive a l'investissement.",
     context: [
       "Le cabinet fonctionne correctement juridiquement, mais l'organisation client est lourde.",
       "Les clients appellent souvent pour demander l'etat d'avancement des dossiers.",
@@ -456,17 +460,15 @@ export const clientScenarios: ClientScenario[] = [
     spontaneousLines: [
       "Ce n'est pas une crise, mais c'est lourd au quotidien.",
       "Nos clients veulent etre rassures et ils appellent souvent.",
-      "Je sais qu'on pourrait etre plus fluides, mais j'ai toujours d'autres priorites.",
+      "Je sais qu'on pourrait etre plus fluides, mais je dois arbitrer les investissements.",
     ],
     hiddenSignals: [
       "Elle a deja eu plusieurs remarques clients sur le manque de fluidite.",
       "Elle gere elle-meme certaines coordinations faute de temps au secretariat.",
       "Elle aimerait que le cabinet paraisse plus moderne et plus reactif.",
     ],
-    objection:
-      "Je comprends l'interet, mais ce n'est peut-etre pas ma priorite immediate.",
-    expectedClosingReaction:
-      "Accepte un rendez-vous de cadrage si le commercial fait verbaliser l'impact sur le secretariat, l'image et la charge personnelle.",
+    objection: standardPriceObjection,
+    expectedClosingReaction: standardPriceClosingReaction,
     relevantSolutions: [
       "Secib Online pour donner de la visibilite client et partager documents, factures, echeances.",
       "Meet Law pour fluidifier la prise de rendez-vous et alleger le secretariat.",
@@ -493,9 +495,9 @@ export const clientScenarios: ClientScenario[] = [
       },
       {
         commercialQuestion:
-          "Pourquoi ce n'est pas encore une priorite immediate ?",
+          "Qu'est-ce qui vous ferait regarder le sujet maintenant ?",
         clientAnswer:
-          "Parce qu'on s'est habitues a fonctionner comme ca. Mais honnetement, ca fatigue tout le monde.",
+          "Si on voit clairement le temps gagne pour le secretariat et l'impact sur l'experience client, ca devient plus simple a arbitrer.",
       },
     ],
   },
@@ -536,10 +538,8 @@ export const clientScenarios: ClientScenario[] = [
       "Le cabinet a deja eu deux alertes sur des encaissements plus tardifs que prevu.",
       "La co-gerante veut professionnaliser le pilotage avant une nouvelle phase de croissance.",
     ],
-    objection:
-      "Ca represente un budget. Je veux etre certaine que le gain de pilotage compense vraiment l'investissement.",
-    expectedClosingReaction:
-      "Accepte une avancee si le commercial chiffre l'enjeu, isole le budget et relie la solution a la visibilite dirigeant.",
+    objection: standardPriceObjection,
+    expectedClosingReaction: standardPriceClosingReaction,
     relevantSolutions: [
       "Pilotage Septeo pour visualiser volumes, rentabilite, temps et activite.",
       "Facturation et encaissement pour reduire les retards et consolider la tresorerie.",

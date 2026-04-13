@@ -663,6 +663,64 @@ textarea:focus {
   margin-bottom: 16px;
 }
 
+.client-section-stack {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.client-fold-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.client-fold-card.is-open {
+  border-color: rgba(0, 138, 114, 0.52);
+}
+
+.client-fold-card > button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 14px;
+  border: 0;
+  background: #ffffff;
+  color: var(--ink);
+  text-align: left;
+}
+
+.client-fold-card > button:hover {
+  background: var(--green-soft);
+}
+
+.client-fold-card > button span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.client-fold-body {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-strong);
+}
+
+.client-fold-body ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
 .detail-grid {
   margin-top: 12px;
 }
@@ -786,11 +844,13 @@ textarea:focus {
     padding: 0 10px 10px;
   }
 
+  .client-fold-card > button,
   .theme-card > button {
     grid-template-columns: 1fr;
     gap: 4px;
   }
 
+  .client-fold-card > button span,
   .theme-card > button span {
     justify-self: start;
   }

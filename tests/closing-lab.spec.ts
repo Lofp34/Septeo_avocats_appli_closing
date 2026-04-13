@@ -22,10 +22,36 @@ test("mobile simulation flow persists notes and exports JSON", async ({
   const durandScenario = page.getByRole("button", {
     name: /Durand & Associes/,
   });
+  const priceObjection =
+    "C'est interessant, mais ca represente quand meme un budget tres important. Ca me fait hesiter.";
   await durandScenario.click();
   await expect(page.getByText("Cas selectionne")).toBeVisible();
   await expect(page.getByText("Analyse documentaire sous tension")).toBeVisible();
   await expect(durandScenario).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByText("Banque de reponses rapides")).toBeVisible();
+  await expect(
+    page.getByText(
+      "Clairement, la lecture et la synthese des pieces. Ce n'est pas rare que l'equipe y passe des blocs entiers de journee.",
+    ),
+  ).toBeVisible();
+  await expect(page.getByText("Solutions Septeo pertinentes")).toBeVisible();
+  await expect(page.getByText(/Septeo Brain pour resumer/)).toBeVisible();
+  await expect(
+    page.getByText(/Le cabinet traite des dossiers avec beaucoup de pieces/),
+  ).toHaveCount(0);
+
+  await page.getByRole("button", { name: /Contexte/ }).click();
+  await expect(
+    page.getByText(/Le cabinet traite des dossiers avec beaucoup de pieces/),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: /Objection prix et closing/ }).click();
+  await expect(
+    page.getByText(/Le cabinet traite des dossiers avec beaucoup de pieces/),
+  ).toHaveCount(0);
+  await expect(page.getByText(priceObjection)).toBeVisible();
+  await page.getByRole("button", { name: /Objection prix et closing/ }).click();
+  await expect(page.getByText(priceObjection)).toHaveCount(0);
 
   await durandScenario.click();
   await expect(durandScenario).toHaveAttribute("aria-expanded", "false");

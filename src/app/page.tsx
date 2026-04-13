@@ -16,6 +16,7 @@ type View = "home" | "notes" | "commercial" | "client";
 type AppState = {
   view: View;
   selectedCaseId: string;
+  activeClientSectionId: string;
   stepIndex: number;
   activeDiscoveryAxisId: string;
   stepChecks: Record<string, boolean[]>;
@@ -29,6 +30,7 @@ const storageKey = "septeo-avocat-closing-lab-v1";
 const initialState = (): AppState => ({
   view: "home",
   selectedCaseId: "",
+  activeClientSectionId: "",
   stepIndex: 0,
   activeDiscoveryAxisId: "",
   stepChecks: {},
@@ -50,6 +52,7 @@ function coerceState(value: unknown): AppState {
     },
     view: partial.view || "home",
     selectedCaseId: partial.selectedCaseId || "",
+    activeClientSectionId: partial.activeClientSectionId || "",
     stepIndex:
       typeof partial.stepIndex === "number" &&
       partial.stepIndex >= -1 &&
@@ -86,6 +89,47 @@ function TextAreaField({
         onChange={(event) => onChange(event.target.value)}
       />
     </label>
+  );
+}
+
+type ClientDetailSection = {
+  id: string;
+  title: string;
+  items?: readonly string[];
+  quote?: string;
+  text?: string;
+};
+
+function ClientFoldSection({
+  section,
+  isOpen,
+  onToggle,
+}: {
+  section: ClientDetailSection;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <article className={isOpen ? "client-fold-card is-open" : "client-fold-card"}>
+      <button type="button" aria-expanded={isOpen} onClick={onToggle}>
+        <strong>{section.title}</strong>
+        <span>{isOpen ? "Fermer" : "Ouvrir"}</span>
+      </button>
+
+      {isOpen ? (
+        <div className="client-fold-body">
+          {section.quote ? <p className="quote">{section.quote}</p> : null}
+          {section.text ? <p>{section.text}</p> : null}
+          {section.items ? (
+            <ul>
+              {section.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ) : null}
+    </article>
   );
 }
 
@@ -147,12 +191,14 @@ export default function Home() {
         return {
           ...current,
           selectedCaseId: "",
+          activeClientSectionId: "",
         };
       }
 
       return {
         ...current,
         selectedCaseId: id,
+        activeClientSectionId: "",
         notes: {
           ...current.notes,
           casePlayed: scenario?.cabinet || current.notes.casePlayed,
@@ -160,6 +206,14 @@ export default function Home() {
         },
       };
     });
+  }
+
+  function toggleClientSection(sectionId: string) {
+    setState((current) => ({
+      ...current,
+      activeClientSectionId:
+        current.activeClientSectionId === sectionId ? "" : sectionId,
+    }));
   }
 
   function toggleStepCheck(stepId: string, index: number) {
@@ -692,52 +746,47 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className="detail-grid">
-                <section>
-                  <h3>Contexte</h3>
-                  <ul>
-                    {selectedScenario.context.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h3>Irritants visibles</h3>
-                  <ul>
-                    {selectedScenario.visibleIrritants.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h3>Consequences</h3>
-                  <ul>
-                    {selectedScenario.consequences.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h3>Ce que je dis spontanement</h3>
-                  <ul>
-                    {selectedScenario.spontaneousLines.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h3>Signaux caches</h3>
-                  <ul>
-                    {selectedScenario.hiddenSignals.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </section>
-                <section>
-                  <h3>Objection et closing</h3>
-                  <p className="quote">{selectedScenario.objection}</p>
-                  <p>{selectedScenario.expectedClosingReaction}</p>
-                </section>
+              <div className="client-section-stack">
+                {[
+                  {
+                    id: "contexte",
+                    title: "Contexte",
+                    items: selectedScenario.context,
+                  },
+                  {
+                    id: "irritants",
+                    title: "Irritants visibles",
+                    items: selectedScenario.visibleIrritants,
+                  },
+                  {
+                    id: "consequences",
+                    title: "Consequences",
+                    items: selectedScenario.consequences,
+                  },
+                  {
+                    id: "spontane",
+                    title: "Ce que je dis spontanement",
+                    items: selectedScenario.spontaneousLines,
+                  },
+                  {
+                    id: "signaux",
+                    title: "Signaux caches",
+                    items: selectedScenario.hiddenSignals,
+                  },
+                  {
+                    id: "objection",
+                    title: "Objection prix et closing",
+                    quote: selectedScenario.objection,
+                    text: selectedScenario.expectedClosingReaction,
+                  },
+                ].map((section) => (
+                  <ClientFoldSection
+                    key={section.id}
+                    section={section}
+                    isOpen={state.activeClientSectionId === section.id}
+                    onToggle={() => toggleClientSection(section.id)}
+                  />
+                ))}
               </div>
 
               <section className="response-bank">
