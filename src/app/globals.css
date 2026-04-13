@@ -154,7 +154,6 @@ button:disabled {
 
 .module-tabs button,
 .action-grid button,
-.step-list button,
 .scenario-card {
   min-height: 52px;
   border: 1px solid var(--line);
@@ -170,14 +169,12 @@ button:disabled {
 
 .module-tabs button:hover,
 .action-grid button:hover,
-.step-list button:hover,
 .scenario-card:hover {
   transform: translateY(-1px);
   border-color: var(--green);
 }
 
 .module-tabs button.is-active,
-.step-list button.is-active,
 .scenario-card.is-active {
   border-color: var(--green);
   background: var(--green-soft);
@@ -192,7 +189,6 @@ button:disabled {
 
 .intro-panel,
 .workspace,
-.step-panel,
 .scenario-detail,
 .empty-state {
   border: 1px solid var(--line);
@@ -320,8 +316,7 @@ h3 {
 }
 
 .notes-grid,
-.detail-grid,
-.content-columns {
+.detail-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
@@ -385,44 +380,7 @@ textarea:focus {
   color: var(--ink);
 }
 
-.commercial-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 12px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-}
-
-.step-list {
-  position: sticky;
-  top: 100px;
-  display: grid;
-  gap: 8px;
-  align-self: start;
-}
-
-.step-list button {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  align-items: center;
-  padding: 10px;
-  text-align: left;
-}
-
-.step-list span {
-  color: var(--red);
-}
-
-.step-panel {
-  padding: clamp(16px, 4vw, 34px);
-}
-
-.content-columns section,
 .checklist-block,
-.script-box,
-.axis-card,
 .scenario-detail section,
 .response-bank article {
   border: 1px solid var(--line);
@@ -431,7 +389,6 @@ textarea:focus {
   padding: 16px;
 }
 
-.script-list,
 .detail-grid ul {
   display: grid;
   gap: 10px;
@@ -441,43 +398,210 @@ textarea:focus {
   line-height: 1.5;
 }
 
-.script-list.warning li::marker {
-  color: var(--red);
-}
-
-.discovery-zone,
 .checklist-block,
-.script-box,
 .step-note,
 .response-bank,
 .solutions-strip {
   margin-top: 16px;
 }
 
-.axis-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+.commercial-workspace {
+  padding: clamp(14px, 3vw, 24px);
 }
 
-.axis-card {
+.compact-head {
+  margin-bottom: 14px;
+}
+
+.commercial-accordion {
   display: grid;
   gap: 10px;
 }
 
-.axis-card strong,
+.step-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(24, 31, 42, 0.06);
+}
+
+.step-card.is-open {
+  border-color: rgba(0, 138, 114, 0.52);
+}
+
+.step-card-button {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 0;
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+}
+
+.step-card-button:hover {
+  background: var(--surface-strong);
+}
+
+.step-card-button span {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--red-soft);
+  color: var(--red);
+  font-weight: 800;
+}
+
+.step-card-button strong {
+  overflow-wrap: anywhere;
+  font-size: 1.06rem;
+}
+
+.step-card-button small {
+  justify-self: end;
+  max-width: 28ch;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.step-card-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.quick-script {
+  display: grid;
+  gap: 8px;
+  padding-top: 14px;
+}
+
+.quick-script p,
+.opening-question p,
+.theme-questions span,
+.scenario-detail p,
+.response-bank p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.quick-script p,
+.opening-question,
+.theme-questions {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  padding: 12px;
+}
+
+.quick-script p {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.opening-question {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  border-color: #bfe4d9;
+  background: var(--green-soft);
+}
+
+.opening-question strong {
+  color: #075647;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.opening-question p {
+  color: var(--ink);
+  font-size: 1.04rem;
+  font-weight: 800;
+}
+
+.theme-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.theme-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.theme-card.is-open {
+  border-color: rgba(228, 45, 84, 0.42);
+}
+
+.theme-card > button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px;
+  border: 0;
+  background: #ffffff;
+  color: var(--ink);
+  text-align: left;
+}
+
+.theme-card > button:hover {
+  background: var(--red-soft);
+}
+
+.theme-card strong,
 .scenario-card strong,
 .response-bank strong {
   overflow-wrap: anywhere;
 }
 
-.axis-card p,
-.script-box p,
-.scenario-detail p,
-.response-bank p {
-  margin: 0;
+.theme-card > button span {
   color: var(--muted);
-  line-height: 1.55;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.theme-questions {
+  display: grid;
+  gap: 8px;
+  margin: 0 10px 10px;
+  background: #fff9fb;
+}
+
+.question-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.question-row input {
+  width: 18px;
+  min-height: 18px;
+  margin-top: 3px;
+  accent-color: var(--red);
+}
+
+.question-row span {
+  color: var(--ink);
+  font-weight: 650;
 }
 
 .check-line {
@@ -494,17 +618,6 @@ textarea:focus {
   min-height: 18px;
   margin-top: 2px;
   accent-color: var(--green);
-}
-
-.script-box {
-  background: var(--yellow-soft);
-  border-color: #efd36e;
-}
-
-.script-box ol {
-  margin: 12px 0 0;
-  padding-left: 20px;
-  line-height: 1.55;
 }
 
 .scenario-grid {
@@ -599,11 +712,8 @@ textarea:focus {
   }
 
   .home-grid,
-  .commercial-layout,
   .notes-grid,
   .detail-grid,
-  .content-columns,
-  .axis-grid,
   .scenario-grid,
   .response-bank > div {
     grid-template-columns: 1fr;
@@ -617,9 +727,15 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
-  .step-list {
-    position: static;
-    grid-template-columns: repeat(2, 1fr);
+  .step-card-button {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .step-card-button small {
+    grid-column: 2;
+    justify-self: start;
+    max-width: 100%;
+    text-align: left;
   }
 
   .scenario-heading {
@@ -657,7 +773,25 @@ textarea:focus {
     min-height: 150px;
   }
 
-  .step-list {
+  .commercial-workspace {
+    padding: 12px;
+  }
+
+  .step-card-button {
+    min-height: 62px;
+    padding: 10px;
+  }
+
+  .step-card-body {
+    padding: 0 10px 10px;
+  }
+
+  .theme-card > button {
     grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .theme-card > button span {
+    justify-self: start;
   }
 }

@@ -17,6 +17,7 @@ type AppState = {
   view: View;
   selectedCaseId: string;
   stepIndex: number;
+  activeDiscoveryAxisId: string;
   stepChecks: Record<string, boolean[]>;
   discoveryChecks: Record<string, Record<string, boolean[]>>;
   stepNotes: Record<string, string>;
@@ -29,6 +30,7 @@ const initialState = (): AppState => ({
   view: "home",
   selectedCaseId: "",
   stepIndex: 0,
+  activeDiscoveryAxisId: "",
   stepChecks: {},
   discoveryChecks: {},
   stepNotes: {},
@@ -50,6 +52,7 @@ function coerceState(value: unknown): AppState {
     selectedCaseId: partial.selectedCaseId || "",
     stepIndex:
       typeof partial.stepIndex === "number" ? partial.stepIndex : 0,
+    activeDiscoveryAxisId: partial.activeDiscoveryAxisId || "",
     stepChecks: partial.stepChecks || {},
     discoveryChecks: partial.discoveryChecks || {},
     stepNotes: partial.stepNotes || {},
@@ -179,6 +182,25 @@ export default function Home() {
     });
   }
 
+  function selectTrainingStep(index: number) {
+    setState((current) => ({
+      ...current,
+      stepIndex: index,
+      activeDiscoveryAxisId:
+        trainingSteps[index]?.id === "decouverte"
+          ? current.activeDiscoveryAxisId
+          : "",
+    }));
+  }
+
+  function toggleDiscoveryAxis(axisId: string) {
+    setState((current) => ({
+      ...current,
+      activeDiscoveryAxisId:
+        current.activeDiscoveryAxisId === axisId ? "" : axisId,
+    }));
+  }
+
   function updateStepNote(stepId: string, value: string) {
     setState((current) => ({
       ...current,
@@ -187,17 +209,6 @@ export default function Home() {
         [stepId]: value,
       },
     }));
-  }
-
-  function moveStep(direction: -1 | 1) {
-    setState((current) => ({
-      ...current,
-      stepIndex: Math.min(
-        Math.max(current.stepIndex + direction, 0),
-        trainingSteps.length - 1,
-      ),
-    }));
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function resetSession() {
@@ -476,153 +487,144 @@ export default function Home() {
       ) : null}
 
       {state.view === "commercial" ? (
-        <section className="workspace commercial-layout">
-          <aside className="step-list" aria-label="Etapes commerciales">
+        <section className="workspace commercial-workspace">
+          <div className="section-head compact-head">
+            <p className="eyebrow">Module 02</p>
+            <h2>Structure de l&apos;entretien</h2>
+            <p>Ouvrez une carte. Lisez la formulation. Jouez-la.</p>
+          </div>
+
+          <div className="commercial-accordion">
             {trainingSteps.map((step, index) => (
-              <button
+              <article
                 key={step.id}
-                type="button"
-                className={state.stepIndex === index ? "is-active" : ""}
-                onClick={() => updateState({ stepIndex: index })}
+                className={
+                  state.stepIndex === index
+                    ? "step-card is-open"
+                    : "step-card"
+                }
               >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                {step.shortLabel}
-              </button>
-            ))}
-          </aside>
+                <button
+                  type="button"
+                  className="step-card-button"
+                  aria-expanded={state.stepIndex === index}
+                  onClick={() => selectTrainingStep(index)}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <strong>{step.shortLabel}</strong>
+                  <small>{step.title}</small>
+                </button>
 
-          <article className="step-panel">
-            <div className="step-kicker">
-              Etape {state.stepIndex + 1} / {trainingSteps.length}
-            </div>
-            <h2>{currentStep.title}</h2>
-            <p className="lead">{currentStep.objective}</p>
+                {state.stepIndex === index ? (
+                  <div className="step-card-body">
+                    {step.id === "decouverte" ? (
+                      <>
+                        <div className="opening-question">
+                          <strong>Question d&apos;ouverture</strong>
+                          <p>
+                            Parlez-moi de votre cabinet et de votre actualite.
+                          </p>
+                        </div>
 
-            <div className="content-columns">
-              <section>
-                <h3>Formulations utiles</h3>
-                <ul className="script-list">
-                  {currentStep.formulations.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-              <section>
-                <h3>Points de vigilance</h3>
-                <ul className="script-list warning">
-                  {currentStep.watchouts.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            </div>
+                        <div className="theme-stack">
+                          {discoveryAxes.map((axis) => {
+                            const isAxisOpen =
+                              state.activeDiscoveryAxisId === axis.id;
 
-            {currentStep.id === "decouverte" ? (
-              <section className="discovery-zone">
-                <h3>Axes de mini-decouverte Septeo</h3>
-                <div className="axis-grid">
-                  {discoveryAxes.map((axis) => (
-                    <article key={axis.id} className="axis-card">
-                      <strong>{axis.title}</strong>
-                      <p>{axis.intent}</p>
-                      {axis.questions.map((question, index) => (
-                        <label key={question} className="check-line">
+                            return (
+                              <article
+                                key={axis.id}
+                                className={
+                                  isAxisOpen
+                                    ? "theme-card is-open"
+                                    : "theme-card"
+                                }
+                              >
+                                <button
+                                  type="button"
+                                  aria-expanded={isAxisOpen}
+                                  onClick={() => toggleDiscoveryAxis(axis.id)}
+                                >
+                                  <strong>{axis.title}</strong>
+                                  <span>{isAxisOpen ? "Fermer" : "Ouvrir"}</span>
+                                </button>
+
+                                {isAxisOpen ? (
+                                  <div className="theme-questions">
+                                    {axis.questions.map((question, questionIndex) => (
+                                      <label
+                                        key={question}
+                                        className="question-row"
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={Boolean(
+                                            state.discoveryChecks.decouverte?.[
+                                              axis.id
+                                            ]?.[questionIndex],
+                                          )}
+                                          onChange={() =>
+                                            toggleDiscoveryCheck(
+                                              axis.id,
+                                              questionIndex,
+                                            )
+                                          }
+                                        />
+                                        <span>{question}</span>
+                                      </label>
+                                    ))}
+                                  </div>
+                                ) : null}
+                              </article>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="quick-script">
+                        {step.formulations.map((item) => (
+                          <p key={item}>{item}</p>
+                        ))}
+                      </div>
+                    )}
+
+                    <section className="checklist-block compact-checklist">
+                      <h3>A verifier</h3>
+                      {step.checklist.map((item, checklistIndex) => (
+                        <label key={item} className="check-line">
                           <input
                             type="checkbox"
                             checked={Boolean(
-                              state.discoveryChecks.decouverte?.[axis.id]?.[
-                                index
-                              ],
+                              state.stepChecks[step.id]?.[checklistIndex],
                             )}
                             onChange={() =>
-                              toggleDiscoveryCheck(axis.id, index)
+                              toggleStepCheck(step.id, checklistIndex)
                             }
                           />
-                          <span>{question}</span>
+                          <span>{item}</span>
                         </label>
                       ))}
-                    </article>
-                  ))}
-                </div>
-              </section>
-            ) : null}
+                    </section>
 
-            {currentStep.id === "objection" ? (
-              <section className="script-box">
-                <h3>Objection a faire jouer</h3>
-                <p>
-                  &quot;C&apos;est interessant, mais ca represente quand meme un
-                  budget. J&apos;ai besoin d&apos;y reflechir.&quot;
-                </p>
-                <ol>
-                  <li>Accueillir : budget legitime.</li>
-                  <li>Isoler : hormis le budget, autre frein ?</li>
-                  <li>Revenir aux enjeux et consequences.</li>
-                  <li>Reengager vers une avancee.</li>
-                </ol>
-              </section>
-            ) : null}
-
-            {currentStep.id === "closing" ? (
-              <section className="script-box">
-                <h3>Closing de reengagement</h3>
-                <p>
-                  &quot;J&apos;ai plutot le sentiment que l&apos;essentiel est
-                  clarifie. Vous m&apos;avez dit que vous aviez tel enjeu, avec
-                  telle consequence, et que cette solution repondait bien au
-                  sujet. Pour moi, le vrai sujet maintenant, c&apos;est
-                  d&apos;avancer. Le 8, c&apos;est bon pour vous ?&quot;
-                </p>
-              </section>
-            ) : null}
-
-            <section className="checklist-block">
-              <h3>Checklist</h3>
-              {currentStep.checklist.map((item, index) => (
-                <label key={item} className="check-line">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(state.stepChecks[currentStep.id]?.[index])}
-                    onChange={() => toggleStepCheck(currentStep.id, index)}
-                  />
-                  <span>{item}</span>
-                </label>
-              ))}
-            </section>
-
-            <label className="field-block step-note" htmlFor="step-note">
-              <span>Note rapide sur cette etape</span>
-              <textarea
-                id="step-note"
-                value={state.stepNotes[currentStep.id] || ""}
-                placeholder="Verbatim client, angle a creuser, formulation a rejouer..."
-                onChange={(event) =>
-                  updateStepNote(currentStep.id, event.target.value)
-                }
-              />
-            </label>
-
-            <div className="button-row">
-              <button
-                type="button"
-                className="secondary"
-                onClick={() => moveStep(-1)}
-                disabled={state.stepIndex === 0}
-              >
-                Etape precedente
-              </button>
-              <button
-                type="button"
-                onClick={() => moveStep(1)}
-                disabled={state.stepIndex === trainingSteps.length - 1}
-              >
-                Etape suivante
-              </button>
-              <button type="button" onClick={() => openView("notes")}>
-                Noter le debrief
-              </button>
-            </div>
-          </article>
+                    <label
+                      className="field-block step-note"
+                      htmlFor={`step-note-${step.id}`}
+                    >
+                      <span>Note rapide</span>
+                      <textarea
+                        id={`step-note-${step.id}`}
+                        value={state.stepNotes[step.id] || ""}
+                        placeholder="Verbatim client, formulation a rejouer, angle a creuser..."
+                        onChange={(event) =>
+                          updateStepNote(step.id, event.target.value)
+                        }
+                      />
+                    </label>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
         </section>
       ) : null}
 

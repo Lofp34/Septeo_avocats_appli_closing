@@ -24,14 +24,43 @@ test("mobile simulation flow persists notes and exports JSON", async ({
   await expect(page.getByText("Analyse documentaire sous tension")).toBeVisible();
 
   await page.getByRole("button", { name: /Lancer le role commercial/ }).click();
-  await expect(page.getByRole("heading", { name: "Brise-glace" })).toBeVisible();
-
-  for (let step = 0; step < 9; step += 1) {
-    await page.getByRole("button", { name: "Etape suivante" }).click();
-  }
-
+  await expect(page.getByText("Structure de l'entretien")).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Closing sobre et assume" }),
+    page.getByRole("button", { name: /Contact\s+Brise-glace/ }),
+  ).toHaveAttribute("aria-expanded", "true");
+
+  await page.getByRole("button", { name: /Decouverte/ }).click();
+  await expect(page.getByText("Question d'ouverture")).toBeVisible();
+  await expect(
+    page.getByText("Parlez-moi de votre cabinet et de votre actualite."),
+  ).toBeVisible();
+
+  await page
+    .getByRole("button", { name: /Temps perdu et charge mentale/ })
+    .click();
+  await expect(
+    page.getByText(
+      "Aujourd'hui, qu'est-ce qui vous fait perdre le plus de temps au cabinet ?",
+    ),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: /Facturation et tresorerie/ }).click();
+  await expect(
+    page.getByText(
+      "Aujourd'hui, qu'est-ce qui vous fait perdre le plus de temps au cabinet ?",
+    ),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText(
+      "Comment suivez-vous la facturation et les encaissements aujourd'hui ?",
+    ),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: /Closing/ }).click();
+  await expect(
+    page.getByText(
+      "Puisque nous sommes d'accord sur les enjeux et sur l'utilite de la solution",
+    ),
   ).toBeVisible();
 
   await page
