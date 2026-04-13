@@ -85,7 +85,7 @@ export const trainingSteps: TrainingStep[] = [
     ],
     sections: [
       {
-        title: "Contact",
+        title: "Bris de Glace",
         formulations: [
           "Merci pour votre temps. Vous avez pu vous connecter facilement ?",
           "Avant de commencer, comment se passe votre semaine ? Dites-moi.",
