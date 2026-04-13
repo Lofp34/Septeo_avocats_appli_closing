@@ -62,6 +62,14 @@ test("mobile simulation flow persists notes and exports JSON", async ({
       "Puisque nous sommes d'accord sur les enjeux et sur l'utilite de la solution",
     ),
   ).toBeVisible();
+  await page.getByRole("button", { name: /Closing/ }).click();
+  await expect(page.getByRole("button", { name: /Closing/ })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await expect(
+    page.getByText(/Puisque nous sommes d'accord sur les enjeux/),
+  ).toHaveCount(0);
 
   await page
     .locator(".module-tabs")

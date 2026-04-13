@@ -51,7 +51,11 @@ function coerceState(value: unknown): AppState {
     view: partial.view || "home",
     selectedCaseId: partial.selectedCaseId || "",
     stepIndex:
-      typeof partial.stepIndex === "number" ? partial.stepIndex : 0,
+      typeof partial.stepIndex === "number" &&
+      partial.stepIndex >= -1 &&
+      partial.stepIndex < trainingSteps.length
+        ? partial.stepIndex
+        : 0,
     activeDiscoveryAxisId: partial.activeDiscoveryAxisId || "",
     stepChecks: partial.stepChecks || {},
     discoveryChecks: partial.discoveryChecks || {},
@@ -114,7 +118,7 @@ export default function Home() {
     [state.selectedCaseId],
   );
 
-  const currentStep = trainingSteps[state.stepIndex] || trainingSteps[0];
+  const currentStep = trainingSteps[state.stepIndex];
 
   function updateState(patch: Partial<AppState>) {
     setState((current) => ({ ...current, ...patch }));
@@ -183,14 +187,18 @@ export default function Home() {
   }
 
   function selectTrainingStep(index: number) {
-    setState((current) => ({
-      ...current,
-      stepIndex: index,
-      activeDiscoveryAxisId:
-        trainingSteps[index]?.id === "decouverte"
-          ? current.activeDiscoveryAxisId
-          : "",
-    }));
+    setState((current) => {
+      const nextStepIndex = current.stepIndex === index ? -1 : index;
+
+      return {
+        ...current,
+        stepIndex: nextStepIndex,
+        activeDiscoveryAxisId:
+          trainingSteps[nextStepIndex]?.id === "decouverte"
+            ? current.activeDiscoveryAxisId
+            : "",
+      };
+    });
   }
 
   function toggleDiscoveryAxis(axisId: string) {
@@ -373,7 +381,7 @@ export default function Home() {
             </p>
             <div className="status-strip">
               <span>Cas : {selectedScenario?.cabinet || "aucun"}</span>
-              <span>Etape : {currentStep.shortLabel}</span>
+              <span>Etape : {currentStep?.shortLabel || "aucune"}</span>
               <span>Validations : {completedChecks}</span>
             </div>
           </div>
