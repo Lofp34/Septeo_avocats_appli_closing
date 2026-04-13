@@ -510,6 +510,19 @@ textarea:focus {
   font-weight: 650;
 }
 
+.script-section {
+  display: grid;
+  gap: 8px;
+}
+
+.script-section h3 {
+  margin: 8px 0 0;
+  color: var(--red);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .opening-question {
   display: grid;
   gap: 6px;

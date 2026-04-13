@@ -66,8 +66,16 @@ test("mobile simulation flow persists notes and exports JSON", async ({
   await page.getByRole("button", { name: /Lancer le role commercial/ }).click();
   await expect(page.getByText("Structure de l'entretien")).toBeVisible();
   await expect(
-    page.getByRole("button", { name: /Contact\s+Brise-glace/ }),
+    page.getByRole("button", { name: /Ouverture\s+Contact, cadre/ }),
   ).toHaveAttribute("aria-expanded", "true");
+  await expect(
+    page.getByText("Avant de commencer, comment se passe votre semaine ? Dites-moi."),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Je vous propose qu'on prenne quelques minutes pour comprendre votre organisation avant de parler solution.",
+    ),
+  ).toHaveCount(0);
 
   await page.getByRole("button", { name: /Decouverte/ }).click();
   await expect(page.getByText("Question d'ouverture")).toBeVisible();
@@ -116,11 +124,11 @@ test("mobile simulation flow persists notes and exports JSON", async ({
     .getByRole("button", { name: "Prise de notes" })
     .click();
   await page
-    .getByLabel("Enjeux reperes")
-    .fill("Charge documentaire et confidentialite.");
+    .getByLabel("Repositionnement du closing")
+    .fill("Le closing se prepare avant la formulation finale.");
   await page
-    .getByLabel("Consequences verbalisees")
-    .fill("Retards, fatigue des collaborateurs et pression qualite.");
+    .getByLabel("Argumentation et persuasion")
+    .fill("Repartir des mots du client avant d'argumenter.");
 
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "Export .json" }).click();
@@ -130,8 +138,8 @@ test("mobile simulation flow persists notes and exports JSON", async ({
   );
 
   await page.reload();
-  await expect(page.getByLabel("Enjeux reperes")).toHaveValue(
-    "Charge documentaire et confidentialite.",
+  await expect(page.getByLabel("Repositionnement du closing")).toHaveValue(
+    "Le closing se prepare avant la formulation finale.",
   );
 
   await expect(page.locator("[data-nextjs-dialog]")).toHaveCount(0);

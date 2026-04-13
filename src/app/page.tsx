@@ -185,7 +185,6 @@ export default function Home() {
   }
 
   function selectScenario(id: string) {
-    const scenario = clientScenarios.find((item) => item.id === id);
     setState((current) => {
       if (current.selectedCaseId === id) {
         return {
@@ -199,11 +198,6 @@ export default function Home() {
         ...current,
         selectedCaseId: id,
         activeClientSectionId: "",
-        notes: {
-          ...current.notes,
-          casePlayed: scenario?.cabinet || current.notes.casePlayed,
-          objection: scenario?.objection || current.notes.objection,
-        },
       };
     });
   }
@@ -290,7 +284,16 @@ export default function Home() {
   }
 
   function buildTextExport() {
-    const scenario = selectedScenario;
+    const noteSections = [
+      ["Ouverture et representations", state.notes.openingRepresentations],
+      ["Repositionnement du closing", state.notes.closingReframe],
+      ["Structure d'entretien", state.notes.interviewStructure],
+      ["Decouverte et consequences", state.notes.discoveryConsequences],
+      ["Argumentation et persuasion", state.notes.argumentationPersuasion],
+      ["Objection prix et closing", state.notes.objectionClosing],
+      ["Mises en situation et debrief", state.notes.simulationDebrief],
+      ["Actions a tester", state.notes.nextActions],
+    ];
     const stepNotes = trainingSteps
       .map((step) => {
         const note = state.stepNotes[step.id];
@@ -304,29 +307,12 @@ export default function Home() {
       "Formation Septeo Avocat - Closing",
       `Export du ${new Date().toLocaleString("fr-FR")}`,
       "",
-      `Cas joue : ${state.notes.casePlayed || scenario?.cabinet || "Non renseigne"}`,
-      `Interlocuteur : ${scenario?.interlocutor || "Non renseigne"}`,
-      "",
-      "Enjeux reperes",
-      state.notes.detectedIssues || "Non renseigne",
-      "",
-      "Consequences verbalisees",
-      state.notes.voicedConsequences || "Non renseigne",
-      "",
-      "Solution pertinente",
-      state.notes.relevantSolution || "Non renseigne",
-      "",
-      "Objection rencontree",
-      state.notes.objection || "Non renseigne",
-      "",
-      "Closing tente",
-      state.notes.closingAttempt || "Non renseigne",
-      "",
-      "Resultat",
-      state.notes.result || "Non renseigne",
-      "",
-      "Notes de debrief",
-      state.notes.debrief || "Non renseigne",
+      "Notes de formation",
+      ...noteSections.flatMap(([label, value]) => [
+        "",
+        label,
+        value || "Non renseigne",
+      ]),
       "",
       "Notes par etape",
       stepNotes || "Non renseigne",
@@ -453,12 +439,12 @@ export default function Home() {
             <button type="button" onClick={() => openView("notes")}>
               <span>01</span>
               <strong>Prise de notes</strong>
-              <small>Enjeux, consequences, objection, closing et debrief.</small>
+              <small>Theorie, persuasion, structure d&apos;entretien et debrief.</small>
             </button>
             <button type="button" onClick={() => openView("commercial")}>
               <span>02</span>
               <strong>Commercial</strong>
-              <small>GPS d&apos;entretien en 10 etapes, jusqu&apos;au closing.</small>
+              <small>Trame en cartes : ouverture, decouverte, argumentation, closing.</small>
             </button>
             <button type="button" onClick={() => openView("client")}>
               <span>03</span>
@@ -475,71 +461,67 @@ export default function Home() {
             <p className="eyebrow">Module 01</p>
             <h2>Prise de notes</h2>
             <p>
-              Gardez uniquement la matiere utile au debrief : enjeux exprimes,
-              consequences, solution, objection et niveau de closing.
+              Notez les idees de la sequence formateur : theorie du closing,
+              entretien de vente, persuasion, pratique et debrief.
             </p>
           </div>
 
           <div className="notes-grid">
-            <label className="field-block" htmlFor="case-played">
-              <span>Cas joue</span>
-              <input
-                id="case-played"
-                value={state.notes.casePlayed}
-                placeholder="Ex. Durand & Associes"
-                onChange={(event) =>
-                  updateNote("casePlayed", event.target.value)
-                }
-              />
-            </label>
             <TextAreaField
-              id="detected-issues"
-              label="Enjeux reperes"
-              value={state.notes.detectedIssues}
-              placeholder="Ex. charge documentaire, facturation tardive, clients qui relancent..."
-              onChange={(value) => updateNote("detectedIssues", value)}
+              id="opening-representations"
+              label="Ouverture et representations"
+              value={state.notes.openingRepresentations}
+              placeholder="Ce que le groupe associe a vendre, entretien utile, closing, points de blocage..."
+              onChange={(value) => updateNote("openingRepresentations", value)}
             />
             <TextAreaField
-              id="voiced-consequences"
-              label="Consequences verbalisees"
-              value={state.notes.voicedConsequences}
-              placeholder="Ce que le client a reconnu lui-meme."
-              onChange={(value) => updateNote("voicedConsequences", value)}
+              id="closing-reframe"
+              label="Repositionnement du closing"
+              value={state.notes.closingReframe}
+              placeholder="Closing naturel, pas force : situation, enjeux, consequences et utilite deja clarifies."
+              onChange={(value) => updateNote("closingReframe", value)}
             />
             <TextAreaField
-              id="relevant-solution"
-              label="Solution pertinente"
-              value={state.notes.relevantSolution}
-              placeholder="Ex. Septeo Brain, Secib Online, Meet Law, pilotage..."
-              onChange={(value) => updateNote("relevantSolution", value)}
+              id="interview-structure"
+              label="Structure d'entretien"
+              value={state.notes.interviewStructure}
+              placeholder="Brise-glace, cadre, plan, timing, validation, mini-pitch : ce que je veux retenir."
+              onChange={(value) => updateNote("interviewStructure", value)}
             />
             <TextAreaField
-              id="objection"
-              label="Objection rencontree"
-              value={state.notes.objection}
-              placeholder="Budget, besoin de reflechir, priorite, confidentialite..."
-              onChange={(value) => updateNote("objection", value)}
+              id="discovery-consequences"
+              label="Decouverte et consequences"
+              value={state.notes.discoveryConsequences}
+              placeholder="Questions utiles, consequences a faire exprimer, temps perdu, charge mentale, visibilite..."
+              onChange={(value) => updateNote("discoveryConsequences", value)}
             />
             <TextAreaField
-              id="closing-attempt"
-              label="Closing tente"
-              value={state.notes.closingAttempt}
-              placeholder="Formulation exacte ou intention de closing."
-              onChange={(value) => updateNote("closingAttempt", value)}
+              id="argumentation-persuasion"
+              label="Argumentation et persuasion"
+              value={state.notes.argumentationPersuasion}
+              placeholder="Argumenter avec les mots du client : vous m'avez dit que..., consequence..., solution..."
+              onChange={(value) => updateNote("argumentationPersuasion", value)}
             />
             <TextAreaField
-              id="result"
-              label="Resultat"
-              value={state.notes.result}
-              placeholder="Avancee acceptee, rappel prevu, refus maintenu..."
-              onChange={(value) => updateNote("result", value)}
+              id="objection-closing"
+              label="Objection prix et closing"
+              value={state.notes.objectionClosing}
+              placeholder="Budget / besoin de reflechir, accueil, retour aux enjeux, avancee datee."
+              onChange={(value) => updateNote("objectionClosing", value)}
             />
             <TextAreaField
-              id="debrief"
-              label="Notes de debrief"
-              value={state.notes.debrief}
-              placeholder="Ce qui a aide, ce qui doit etre rejoue, prochaine consigne."
-              onChange={(value) => updateNote("debrief", value)}
+              id="simulation-debrief"
+              label="Mises en situation et debrief"
+              value={state.notes.simulationDebrief}
+              placeholder="Observations sur la structure, qualite des questions, relances, courage de closer..."
+              onChange={(value) => updateNote("simulationDebrief", value)}
+            />
+            <TextAreaField
+              id="next-actions"
+              label="Actions a tester"
+              value={state.notes.nextActions}
+              placeholder="Ce que je garde pour mon prochain entretien, phrases a reutiliser, points a travailler."
+              onChange={(value) => updateNote("nextActions", value)}
             />
           </div>
 
@@ -653,9 +635,21 @@ export default function Home() {
                       </>
                     ) : (
                       <div className="quick-script">
-                        {step.formulations.map((item) => (
-                          <p key={item}>{item}</p>
-                        ))}
+                        {step.sections
+                          ? step.sections.map((section) => (
+                              <section
+                                key={section.title}
+                                className="script-section"
+                              >
+                                <h3>{section.title}</h3>
+                                {section.formulations.map((item) => (
+                                  <p key={item}>{item}</p>
+                                ))}
+                              </section>
+                            ))
+                          : step.formulations.map((item) => (
+                              <p key={item}>{item}</p>
+                            ))}
                       </div>
                     )}
 

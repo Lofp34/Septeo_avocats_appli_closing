@@ -1,12 +1,17 @@
 export type SessionNotes = {
-  casePlayed: string;
-  detectedIssues: string;
-  voicedConsequences: string;
-  relevantSolution: string;
-  objection: string;
-  closingAttempt: string;
-  result: string;
-  debrief: string;
+  openingRepresentations: string;
+  closingReframe: string;
+  interviewStructure: string;
+  discoveryConsequences: string;
+  argumentationPersuasion: string;
+  objectionClosing: string;
+  simulationDebrief: string;
+  nextActions: string;
+};
+
+export type TrainingSection = {
+  title: string;
+  formulations: string[];
 };
 
 export type TrainingStep = {
@@ -15,6 +20,7 @@ export type TrainingStep = {
   title: string;
   objective: string;
   formulations: string[];
+  sections?: TrainingSection[];
   watchouts: string[];
   checklist: string[];
 };
@@ -49,147 +55,85 @@ export type ClientScenario = {
 };
 
 export const defaultNotes: SessionNotes = {
-  casePlayed: "",
-  detectedIssues: "",
-  voicedConsequences: "",
-  relevantSolution: "",
-  objection: "",
-  closingAttempt: "",
-  result: "",
-  debrief: "",
+  openingRepresentations: "",
+  closingReframe: "",
+  interviewStructure: "",
+  discoveryConsequences: "",
+  argumentationPersuasion: "",
+  objectionClosing: "",
+  simulationDebrief: "",
+  nextActions: "",
 };
 
 export const trainingSteps: TrainingStep[] = [
   {
-    id: "brise-glace",
-    shortLabel: "Contact",
-    title: "Brise-glace",
+    id: "ouverture",
+    shortLabel: "Ouverture",
+    title: "Contact, cadre, plan, timing, validation, pitch",
     objective:
-      "Installer une relation simple et professionnelle avant d'entrer dans le fond.",
+      "Ouvrir l'entretien Inside Sales avec une entree relationnelle simple, un cadre clair et un mini-pitch court.",
     formulations: [
       "Merci pour votre temps. Vous avez pu vous connecter facilement ?",
-      "Avant de commencer, comment se passe la semaine au cabinet ?",
-      "Je vous propose qu'on prenne quelques minutes pour comprendre votre organisation avant de parler solution.",
-    ],
-    watchouts: [
-      "Ne pas demarrer par le produit.",
-      "Ne pas prolonger trop longtemps la conversation informelle.",
-      "Rester naturel, pas familier.",
-    ],
-    checklist: [
-      "J'ai cree un contact simple.",
-      "J'ai garde un ton professionnel.",
-      "Je suis pret a poser le cadre.",
-    ],
-  },
-  {
-    id: "cadre",
-    shortLabel: "Cadre",
-    title: "Cadre de l'echange",
-    objective:
-      "Dire clairement pourquoi on se parle et eviter un entretien flou ou subi.",
-    formulations: [
+      "Avant de commencer, comment se passe votre semaine ? Dites-moi.",
       "L'objectif aujourd'hui, c'est de comprendre votre fonctionnement actuel et de voir si Septeo peut vous aider sur des sujets concrets.",
-      "Je ne vais pas commencer par vous derouler un catalogue. Je veux d'abord comprendre ce qui compte vraiment pour votre cabinet.",
-      "Si on identifie un vrai sujet, je vous proposerai une avancee simple a la fin de l'echange.",
-    ],
-    watchouts: [
-      "Ne pas promettre de tout traiter.",
-      "Ne pas annoncer un entretien uniquement technique.",
-      "Ne pas laisser le client definir seul le rythme.",
-    ],
-    checklist: [
-      "Le client sait pourquoi on echange.",
-      "La logique decouverte puis solution est posee.",
-      "La possibilite d'une avancee finale est annoncee.",
-    ],
-  },
-  {
-    id: "plan",
-    shortLabel: "Plan",
-    title: "Plan de l'entretien",
-    objective:
-      "Donner un fil conducteur court pour securiser le client et guider le commercial.",
-    formulations: [
-      "Je vous propose trois temps : votre organisation actuelle, les points qui freinent, puis ce qu'on peut envisager concretement.",
-      "On commence par votre situation, on creuse les impacts, puis je vous dirai ce qui me semble pertinent cote Septeo.",
-      "A la fin, si c'est coherent, on decide ensemble de la prochaine etape.",
-    ],
-    watchouts: [
-      "Ne pas annoncer dix etapes.",
-      "Ne pas utiliser de jargon commercial.",
-      "Ne pas oublier de parler de la prochaine etape.",
-    ],
-    checklist: [
-      "Le plan est court.",
-      "Le client comprend son role dans l'echange.",
-      "La fin de l'entretien est cadree.",
-    ],
-  },
-  {
-    id: "timing",
-    shortLabel: "Timing",
-    title: "Timing",
-    objective:
-      "Verifier la disponibilite reelle du client et proteger le temps de closing.",
-    formulations: [
-      "Nous avons bien une vingtaine de minutes devant nous ?",
-      "Je vous propose de garder cinq minutes a la fin pour decider de la suite.",
-      "Si un point merite d'etre approfondi, je vous le signalerai et on priorisera.",
-    ],
-    watchouts: [
-      "Ne pas decouvrir a la fin que le client doit partir.",
-      "Ne pas sacrifier le closing faute de temps.",
-      "Ne pas imposer un timing sans validation.",
-    ],
-    checklist: [
-      "La duree est validee.",
-      "Un temps de decision est preserve.",
-      "Je peux avancer sans precipiter.",
-    ],
-  },
-  {
-    id: "validation",
-    shortLabel: "Accord",
-    title: "Validation",
-    objective:
-      "Obtenir un accord explicite sur la maniere d'avancer avant la decouverte.",
-    formulations: [
-      "Est-ce que cette maniere de proceder vous convient ?",
-      "Ca vous va si on commence par votre organisation actuelle ?",
-      "Si je vous pose quelques questions assez concretes, c'est bon pour vous ?",
-    ],
-    watchouts: [
-      "Ne pas enchainer trop vite.",
-      "Ne pas confondre silence et accord.",
-      "Ne pas oublier de reformuler si le client hesite.",
-    ],
-    checklist: [
-      "Le client a valide le cadre.",
-      "Je peux questionner sans etre intrusif.",
-      "L'entretien est engage.",
-    ],
-  },
-  {
-    id: "mini-pitch",
-    shortLabel: "Pitch",
-    title: "Mini-pitch Septeo",
-    objective:
-      "Presenter Septeo en moins de 45 secondes, sans voler la place de la decouverte.",
-    formulations: [
+      "Je ne vais pas commencer par vous derouler un catalogue, je vais d'abord comprendre ce qui compte vraiment pour votre cabinet.",
+      "Si on identifie un vrai sujet, je vous proposerai d'en parler concretement, d'echanger concretement la-dessus a la fin de l'echange.",
+      "Je vais vous presenter rapidement Septeo.",
+      "Ensuite, on va s'interesser a votre organisation actuelle, aux points qui peuvent freiner eventuellement et a ce qu'on peut envisager concretement.",
+      "C'est un entretien qui dure une vingtaine de minutes. Est-ce que c'est bon pour vous ?",
       "Septeo accompagne les cabinets d'avocats sur leur organisation, leurs dossiers, leur relation client, leur pilotage et leurs gains de temps.",
       "Notre sujet, ce n'est pas seulement un logiciel. C'est de voir ou votre cabinet perd du temps, de la visibilite ou de la fluidite.",
       "Selon vos enjeux, on peut parler dossiers, facturation, espace client, rendez-vous, paiement en ligne ou IA avec Septeo Brain.",
     ],
+    sections: [
+      {
+        title: "Contact",
+        formulations: [
+          "Merci pour votre temps. Vous avez pu vous connecter facilement ?",
+          "Avant de commencer, comment se passe votre semaine ? Dites-moi.",
+        ],
+      },
+      {
+        title: "Cadre",
+        formulations: [
+          "L'objectif aujourd'hui, c'est de comprendre votre fonctionnement actuel et de voir si Septeo peut vous aider sur des sujets concrets.",
+          "Je ne vais pas commencer par vous derouler un catalogue, je vais d'abord comprendre ce qui compte vraiment pour votre cabinet.",
+          "Si on identifie un vrai sujet, je vous proposerai d'en parler concretement, d'echanger concretement la-dessus a la fin de l'echange.",
+        ],
+      },
+      {
+        title: "Plan",
+        formulations: [
+          "Je vais vous presenter rapidement Septeo.",
+          "Ensuite, on va s'interesser a votre organisation actuelle, aux points qui peuvent freiner eventuellement et a ce qu'on peut envisager concretement.",
+        ],
+      },
+      {
+        title: "Timing et validation",
+        formulations: [
+          "C'est un entretien qui dure une vingtaine de minutes. Est-ce que c'est bon pour vous ?",
+        ],
+      },
+      {
+        title: "Pitch Septeo",
+        formulations: [
+          "Septeo accompagne les cabinets d'avocats sur leur organisation, leurs dossiers, leur relation client, leur pilotage et leurs gains de temps.",
+          "Notre sujet, ce n'est pas seulement un logiciel. C'est de voir ou votre cabinet perd du temps, de la visibilite ou de la fluidite.",
+          "Selon vos enjeux, on peut parler dossiers, facturation, espace client, rendez-vous, paiement en ligne ou IA avec Septeo Brain.",
+        ],
+      },
+    ],
     watchouts: [
-      "Ne pas transformer le mini-pitch en demonstration produit.",
-      "Ne pas citer toutes les offres.",
-      "Ne pas supposer le besoin avant d'avoir questionne.",
+      "Ne pas demarrer par le produit.",
+      "Ne pas transformer le pitch en demonstration.",
+      "Faire valider le timing avant de passer a la decouverte.",
     ],
     checklist: [
-      "Mon pitch est court.",
-      "Je parle enjeux avant produit.",
-      "Je rebascule vite vers le client.",
+      "Le contact est simple et professionnel.",
+      "Le cadre est pose sans catalogue.",
+      "Le plan et le timing sont valides.",
+      "Le pitch Septeo reste court.",
+      "Je rebascule vers l'organisation du client.",
     ],
   },
   {
